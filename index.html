@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Le Temps d'un Instant</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  <meta name="apple-mobile-web-app-title" content="Le Temps d'un Instant" />
+  <link rel="apple-touch-icon" href="logo.png" />
+  <link rel="icon" type="image/png" href="logo.png" />
+  <meta name="theme-color" content="#100E0C" />
+</head>
+<body>
+
+  <div id="loading-overlay" style="display:none;position:fixed;inset:0;background:#100E0C;z-index:99999;align-items:center;justify-content:center;flex-direction:column;gap:16px;">
+    <img src="logo.png" style="width:120px;height:auto;" alt="logo" />
+    <div style="color:#C4A882;font-size:13px;letter-spacing:0.1em;">Connexion en cours…</div>
+  </div>
+
+  <div id="profile-overlay" class="profile-overlay hidden">
+    <div class="profile-box">
+      <img src="logo.png" class="profile-logo" alt="Le Temps d'un Instant" />
+      <h1 class="profile-title">Qui êtes-vous ?</h1>
+      <div class="profile-group">
+        <div class="profile-group-label">Gérante</div>
+        <div class="profile-btns" id="profile-btns-gerante"></div>
+      </div>
+      <div class="profile-group">
+        <div class="profile-group-label">Redressage</div>
+        <div class="profile-btns" id="profile-btns-menage"></div>
+      </div>
+      <div class="profile-group">
+        <div class="profile-group-label">Massages</div>
+        <div class="profile-btns" id="profile-btns-massage"></div>
+      </div>
+    </div>
+  </div>
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <img src="logo.png" alt="Le Temps d'un Instant" class="sidebar-logo-img" />
+    </div>
+    <nav class="sidebar-nav">
+      <a href="#" class="nav-item active" data-view="dashboard">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        <span>Tableau de bord</span>
+      </a>
+      <a href="#" class="nav-item" data-view="new-reservation">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+        <span>Nouvelle réservation</span>
+      </a>
+      <a href="#" class="nav-item" data-view="massage">
+        <svg viewBox="0 0 24 24"><path d="M12 2C8 6 6 9 6 12a6 6 0 0 0 12 0c0-3-2-6-6-10z"/></svg>
+        <span>Massages</span>
+      </a>
+      <a href="#" class="nav-item" data-view="all-reservations">
+        <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        <span id="all-nav-label">Toutes les réservations</span>
+      </a>
+      <a href="#" class="nav-item" data-view="calendar">
+        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        <span>Calendrier</span>
+      </a>
+      <a href="#" class="nav-item" data-view="temps-travail">
+        <svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        <span>Temps de travail</span>
+      </a>
+      <a href="#" class="nav-item" data-view="settings">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        <span>Réglages</span>
+      </a>
+    </nav>
+    <div class="sidebar-footer">
+      <span class="sidebar-footer-label" id="current-profile-label">© Le Temps d'un Instant</span>
+      <button type="button" class="profile-switch-btn" id="btn-switch-profile" title="Changer de profil">🔄</button>
+    </div>
+  </aside>
+
+  <header class="topbar">
+    <button class="topbar-menu" id="menu-toggle">
+      <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+    <div class="topbar-logo">
+      <img src="logo.png" class="topbar-logo-img" alt="logo" />
+    </div>
+  </header>
+
+  <main class="main-content">
+
+    <!-- DASHBOARD -->
+    <section class="view" id="view-dashboard">
+      <div class="view-header">
+        <h1>Réservations</h1>
+        <button class="btn btn-primary" data-view="new-reservation">
+          <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Nouvelle réservation
+        </button>
+      </div>
+      <div class="stats-bar">
+        <div class="stat-card"><div class="stat-label">Total</div><div class="stat-value" id="stat-total">0</div></div>
+        <div class="stat-card"><div class="stat-label">À préparer</div><div class="stat-value gold" id="stat-prepare">0</div></div>
+        <div class="stat-card"><div class="stat-label">Prêtes</div><div class="stat-value green" id="stat-ready">0</div></div>
+        <div class="stat-card"><div class="stat-label">En cours</div><div class="stat-value blue" id="stat-active">0</div></div>
+      </div>
+      <div class="filters-bar">
+        <div class="search-wrap">
+          <svg class="search-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
+          <input type="text" id="search-input" placeholder="Rechercher un client…" />
+        </div>
+        <input type="date" id="filter-date" />
+        <select id="filter-status"><option value="">Tous les statuts</option></select>
+        <button class="btn btn-ghost" id="btn-clear-filters">Effacer</button>
+      </div>
+      <div class="reservation-list" id="reservation-list"></div>
+    </section>
+
+    <!-- FORMULAIRE -->
+    <section class="view hidden" id="view-new-reservation">
+      <div class="view-header">
+        <button class="btn btn-ghost btn-back" data-view="dashboard">
+          <svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+          Retour
+        </button>
+        <h1 id="form-title">Nouvelle réservation</h1>
+      </div>
+      <form class="resa-form" id="resa-form" novalidate>
+        <input type="hidden" id="edit-id" />
+        <div class="form-section">
+          <h2 class="form-section-title">Client</h2>
+          <div class="form-row">
+            <div class="form-group"><label for="f-prenom">Prénom *</label><input type="text" id="f-prenom" required placeholder="Marie" /></div>
+            <div class="form-group"><label for="f-nom">Nom *</label><input type="text" id="f-nom" required placeholder="Dupont" /></div>
+            <div class="form-group"><label for="f-tel">Téléphone</label><input type="tel" id="f-tel" placeholder="+33 6 00 00 00 00" /></div>
+            <div class="form-group"><label for="f-nb-personnes">Nb de personnes</label><input type="number" id="f-nb-personnes" min="1" max="10" placeholder="2" style="max-width:100px;" /></div>
+          </div>
+        </div>
+        <div class="form-section">
+          <h2 class="form-section-title">Séjour</h2>
+          <div class="form-row">
+            <div class="form-group"><label for="f-date">Date d'arrivée *</label><input type="date" id="f-date" required /></div>
+            <div class="form-group"><label for="f-heure">Heure d'arrivée *</label><input type="text" id="f-heure" required placeholder="14:30" maxlength="5" class="time-input" autocomplete="off" /></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label for="f-date-depart">Date de départ</label><input type="date" id="f-date-depart" /></div>
+            <div class="form-group"><label for="f-heure-depart">Heure de départ</label><input type="text" id="f-heure-depart" placeholder="11:00" maxlength="5" class="time-input" autocomplete="off" /></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label for="f-formule">Formule *</label><select id="f-formule" required><option value="">Choisir une formule</option></select></div>
+            <div class="form-group"><label for="f-statut">Statut</label><select id="f-statut"></select></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="option-toggle" style="border-color:var(--gold);background:var(--gold-dim);">
+                <input type="checkbox" id="f-rachel" />
+                <span class="option-label">🧴 Assignée à Rachel</span>
+              </label>
+            </div>
+            <div class="form-group">
+              <label class="option-toggle" style="border-color:var(--gold);background:var(--gold-dim);">
+                <input type="checkbox" id="f-milla" />
+                <span class="option-label">🧴 Assignée à Milla</span>
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="form-section">
+          <h2 class="form-section-title">Options</h2>
+          <div class="options-grid" id="options-grid"></div>
+        </div>
+        <div class="form-section">
+          <h2 class="form-section-title">Paiement</h2>
+          <div class="form-row">
+            <div class="form-group"><label for="f-prix">Prix total (€)</label><input type="number" id="f-prix" min="0" placeholder="0" /></div>
+            <div class="form-group"><label for="f-acompte">Acompte reçu (€)</label><input type="number" id="f-acompte" min="0" placeholder="0" /></div>
+            <div class="form-group solde-display"><label>Solde à récupérer</label><div class="solde-value" id="solde-preview">0 €</div></div>
+          </div>
+        </div>
+        <div class="form-section">
+          <h2 class="form-section-title">Demandes spéciales</h2>
+          <div class="form-group"><textarea id="f-notes" rows="3" placeholder="Pétales de roses, allergies…"></textarea></div>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn btn-ghost" data-view="dashboard">Annuler</button>
+          <button type="submit" class="btn btn-primary">Enregistrer</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- VUE MASSAGE -->
+    <section class="view hidden" id="view-massage">
+
+      <!-- bloc gérante : saisie + liste -->
+      <div id="massage-gerante-block">
+        <div class="view-header"><h1>Massage — Saisie</h1></div>
+        <form class="resa-form" id="massage-form" novalidate>
+          <input type="hidden" id="mf-edit-id" />
+          <div class="form-section">
+            <div class="form-row">
+              <div class="form-group"><label for="mf-titre">Titre *</label><input type="text" id="mf-titre" required placeholder="Massage duo, soin découverte…" /></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label for="mf-date">Date *</label><input type="date" id="mf-date" required /></div>
+              <div class="form-group"><label for="mf-heure">Heure de début *</label><input type="text" id="mf-heure" required placeholder="14:00" maxlength="5" class="time-input" autocomplete="off" /></div>
+              <div class="form-group"><label for="mf-duree">Durée</label><input type="text" id="mf-duree" placeholder="1h00" maxlength="6" class="time-input" autocomplete="off" /></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label for="mf-nb">Nb de personnes *</label><input type="number" id="mf-nb" min="1" max="20" step="1" required placeholder="1" style="max-width:120px;" /></div>
+            </div>
+            <div class="form-group">
+              <label>Masseuse(s) assignée(s) *</label>
+              <div class="options-grid" id="mf-assignees"></div>
+            </div>
+            <div class="form-group"><label for="mf-notes">Notes (optionnel)</label><textarea id="mf-notes" rows="2" placeholder="Détails, préférences…"></textarea></div>
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn btn-ghost" id="mf-cancel">Annuler</button>
+            <button type="submit" class="btn btn-primary">Enregistrer</button>
+          </div>
+        </form>
+        <div class="view-header" style="margin-top:24px;">
+          <h1 style="font-size:20px;">Massages</h1>
+          <div class="menage-tabs" id="massage-gerante-tabs">
+            <button type="button" class="tab-btn active" data-tab="avenir">À venir</button>
+            <button type="button" class="tab-btn" data-tab="passees">Passés</button>
+          </div>
+        </div>
+        <div class="rachel-cards" id="massage-gerante-list"></div>
+      </div>
+
+      <!-- bloc masseuse : consultation -->
+      <div id="massage-staff-block" class="hidden">
+        <div class="view-header">
+          <h1 id="massage-staff-title">Mes massages</h1>
+          <div class="menage-tabs" id="massage-tabs">
+            <button type="button" class="tab-btn active" data-tab="avenir">À venir</button>
+            <button type="button" class="tab-btn" data-tab="passees">Passés</button>
+          </div>
+        </div>
+        <div class="rachel-cards" id="massage-staff-cards"></div>
+      </div>
+    </section>
+
+    <!-- TOUTES LES RÉSERVATIONS -->
+    <section class="view hidden" id="view-all-reservations">
+      <div class="view-header">
+        <h1 id="all-view-title">Toutes les réservations</h1>
+        <div class="menage-tabs" id="all-tabs">
+          <button type="button" class="tab-btn active" data-tab="avenir">À venir</button>
+          <button type="button" class="tab-btn" data-tab="passees">Passées</button>
+        </div>
+        <select id="all-filter-status" class="filter-select"><option value="">Tous les statuts</option></select>
+      </div>
+      <div class="rachel-cards" id="all-cards"></div>
+    </section>
+
+    <!-- CALENDRIER -->
+    <section class="view hidden" id="view-calendar">
+      <div class="view-header">
+        <h1>Calendrier</h1>
+        <div class="cal-nav">
+          <button class="btn btn-ghost btn-icon" id="cal-prev"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
+          <span id="cal-month-label" class="cal-month-label"></span>
+          <button class="btn btn-ghost btn-icon" id="cal-next"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></button>
+          <button class="btn btn-danger btn-sm cal-fermer-desktop" id="btn-fermer-chambre-header" style="margin-left:12px;">Fermer chambre</button>
+        </div>
+      </div>
+      <div class="calendar-grid" id="calendar-grid"></div>
+      <div class="cal-fermer-mobile" style="margin-top:12px;display:none;">
+        <button class="btn btn-danger" id="btn-fermer-chambre-mobile" style="width:100%;justify-content:center;">Fermer chambre</button>
+      </div>
+      <div class="cal-detail" id="cal-detail" style="display:none;">
+        <div class="cal-detail-header">
+          <span id="cal-detail-date"></span>
+          <button class="btn btn-ghost btn-icon" id="cal-detail-close"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+        </div>
+        <div id="cal-detail-list"></div>
+      </div>
+    </section>
+
+    <!-- TEMPS DE TRAVAIL -->
+    <section class="view hidden" id="view-temps-travail">
+      <div class="view-header"><h1>Temps de travail</h1></div>
+
+      <div class="recap-rachel-content" style="margin-bottom:32px;">
+        <h2 style="font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--gold);margin-bottom:12px;">🧴 Rachel</h2>
+        <div class="recap-stats-row">
+          <div class="recap-stat-card"><div class="recap-stat-label">Heures totales</div><div class="recap-stat-value" id="recap-total-heures-rachel">0h</div></div>
+          <div class="recap-stat-card gold"><div class="recap-stat-label">Montant dû (15€/h)</div><div class="recap-stat-value" id="recap-total-montant-rachel">0 €</div></div>
+          <div class="recap-stat-card"><div class="recap-stat-label">Taux horaire</div><div class="recap-stat-value">15 €/h</div></div>
+        </div>
+        <div class="recap-period" id="recap-period-rachel"></div>
+        <div class="recap-detail" id="recap-detail-rachel"></div>
+        <div class="recap-actions">
+          <div class="recap-payer-row">
+            <div class="form-group" style="flex:1;max-width:200px;">
+              <label style="font-size:12px;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.06em;">Montant à payer (€)</label>
+              <input type="number" id="recap-montant-paye-rachel" min="0" step="0.01" placeholder="Laisser vide = montant dû" style="height:44px;font-size:16px;font-weight:600;" />
+            </div>
+            <button class="btn btn-primary btn-payer" id="btn-payer-rachel">
+              <svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+              Marquer comme payé
+            </button>
+          </div>
+        </div>
+        <div class="recap-historique">
+          <h2 class="recap-historique-title">Historique des paiements — Rachel</h2>
+          <div id="historique-list-rachel"></div>
+        </div>
+      </div>
+
+      <div class="recap-rachel-content">
+        <h2 style="font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--gold);margin-bottom:12px;">🧴 Milla</h2>
+        <div class="recap-stats-row">
+          <div class="recap-stat-card"><div class="recap-stat-label">Heures totales</div><div class="recap-stat-value" id="recap-total-heures-milla">0h</div></div>
+          <div class="recap-stat-card gold"><div class="recap-stat-label">Montant dû (15€/h)</div><div class="recap-stat-value" id="recap-total-montant-milla">0 €</div></div>
+          <div class="recap-stat-card"><div class="recap-stat-label">Taux horaire</div><div class="recap-stat-value">15 €/h</div></div>
+        </div>
+        <div class="recap-period" id="recap-period-milla"></div>
+        <div class="recap-detail" id="recap-detail-milla"></div>
+        <div class="recap-actions">
+          <div class="recap-payer-row">
+            <div class="form-group" style="flex:1;max-width:200px;">
+              <label style="font-size:12px;color:var(--gray-400);text-transform:uppercase;letter-spacing:0.06em;">Montant à payer (€)</label>
+              <input type="number" id="recap-montant-paye-milla" min="0" step="0.01" placeholder="Laisser vide = montant dû" style="height:44px;font-size:16px;font-weight:600;" />
+            </div>
+            <button class="btn btn-primary btn-payer" id="btn-payer-milla">
+              <svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+              Marquer comme payé
+            </button>
+          </div>
+        </div>
+        <div class="recap-historique">
+          <h2 class="recap-historique-title">Historique des paiements — Milla</h2>
+          <div id="historique-list-milla"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RÉGLAGES -->
+    <section class="view hidden" id="view-settings">
+      <div class="view-header"><h1>Réglages</h1></div>
+      <div class="settings-block">
+        <div class="settings-block-header">
+          <div><h2 class="settings-block-title">Formules</h2><p class="settings-block-desc">Les formules disponibles dans le formulaire.</p></div>
+          <button class="btn btn-primary btn-sm" id="btn-add-formule"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Ajouter</button>
+        </div>
+        <div class="settings-list" id="formules-list"></div>
+      </div>
+      <div class="settings-block">
+        <div class="settings-block-header">
+          <div><h2 class="settings-block-title">Options</h2><p class="settings-block-desc">Les options affichées dans le formulaire.</p></div>
+          <button class="btn btn-primary btn-sm" id="btn-add-option"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Ajouter</button>
+        </div>
+        <div class="settings-list" id="options-list"></div>
+      </div>
+      <div class="settings-block">
+        <div class="settings-block-header">
+          <div><h2 class="settings-block-title">Statuts</h2><p class="settings-block-desc">Les statuts pour classer les réservations.</p></div>
+          <button class="btn btn-primary btn-sm" id="btn-add-statut"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Ajouter</button>
+        </div>
+        <div class="settings-list" id="statuts-list"></div>
+      </div>
+      <div class="settings-block">
+        <div class="settings-block-header">
+          <div><h2 class="settings-block-title">Tâches fixes</h2><p class="settings-block-desc">Tâches affichées sur chaque carte Rachel.</p></div>
+          <button class="btn btn-primary btn-sm" id="btn-add-tache"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Ajouter</button>
+        </div>
+        <div class="settings-list" id="taches-list"></div>
+      </div>
+      <div class="settings-block">
+        <div class="settings-block-header">
+          <div><h2 class="settings-block-title">Profils</h2><p class="settings-block-desc">Les prénoms affichés pour chaque profil.</p></div>
+        </div>
+        <div class="settings-list" id="profils-list"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <div class="toast" id="toast"></div>
+
+  <div class="modal-overlay hidden" id="modal-overlay">
+    <div class="modal">
+      <h2 class="modal-title">Supprimer cette réservation ?</h2>
+      <p class="modal-body">Cette action est irréversible.</p>
+      <div class="modal-actions">
+        <button class="btn btn-ghost" id="modal-cancel">Annuler</button>
+        <button class="btn btn-danger" id="modal-confirm">Supprimer</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay hidden" id="edit-modal-overlay">
+    <div class="modal">
+      <h2 class="modal-title" id="edit-modal-title">Modifier</h2>
+      <div class="form-group" id="emoji-row" style="margin-bottom:12px;">
+        <label>Emoji</label>
+        <input type="text" id="edit-modal-emoji" placeholder="Ex: 🌹" style="max-width:80px;" />
+      </div>
+      <div class="form-group" style="margin-bottom:20px;">
+        <label id="edit-modal-label-name">Nom</label>
+        <input type="text" id="edit-modal-name" placeholder="Nom…" />
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-ghost" id="edit-modal-cancel">Annuler</button>
+        <button class="btn btn-primary" id="edit-modal-save">Enregistrer</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
